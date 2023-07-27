@@ -23,6 +23,7 @@ const createUser = (data) => {
         }
     });
 };
+
 const updateUser = (userId, data) => {
     return new Promise(async (resolve, reject) => {
         try {
