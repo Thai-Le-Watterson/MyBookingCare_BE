@@ -6,17 +6,34 @@ const getTopDoctors = (limit) => {
             const topDoctors = await db.Users.findAll({
                 limit: limit ? +limit : 10,
                 where: { roleId: "R2" },
+                attributes: {
+                    exclude: ["password"],
+                },
+                include: [
+                    {
+                        model: db.Allcodes,
+                        as: "positionData",
+                        attributes: ["valueVi", "valueEn"],
+                    },
+                    {
+                        model: db.Allcodes,
+                        as: "genderData",
+                        attributes: ["valueVi", "valueEn"],
+                    },
+                ],
+                raw: true,
+                nest: true,
             });
 
             if (topDoctors) {
                 resolve({
-                    errorCode: 0,
+                    errCode: 0,
                     message: "Get top doctors successfuly",
                     topDoctors,
                 });
             } else {
                 resolve({
-                    errorCode: 1,
+                    errCode: 1,
                     message: "Get top doctor fail",
                 });
             }

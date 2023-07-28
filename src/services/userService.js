@@ -152,6 +152,7 @@ const updateUser = (data) => {
                 const option = {
                     fullName: data.fullName,
                     address: data.address,
+                    phonenumber: data.phonenumber,
                     gender: data.gender,
                     positionId: data.positionId,
                     roleId: data.roleId,

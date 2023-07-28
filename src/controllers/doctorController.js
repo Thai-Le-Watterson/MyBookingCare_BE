@@ -9,7 +9,7 @@ const getTopDoctors = async (req, res) => {
         });
     } catch (e) {
         return {
-            errorCode: -1,
+            errCode: -1,
             message: "Get error from sever",
             error: e,
         };
