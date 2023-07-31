@@ -2,6 +2,7 @@ import express from "express";
 import * as homeController from "../controllers/homeController";
 import * as userController from "../controllers/userController";
 import * as doctorController from "../controllers/doctorController";
+import * as markdownController from "../controllers/markdownController";
 
 const route = express.Router();
 
@@ -22,8 +23,18 @@ const initWebRoutes = (app) => {
     route.delete("/api/delete-user", userController.deleteUser);
 
     route.get("/api/top-doctors", doctorController.getTopDoctors);
+    route.get("/api/all-doctors", doctorController.getAllDoctors);
+    route.get("/api/detail-doctor?:id", doctorController.getDoctorDetail);
 
     route.get("/api/get-allcode", userController.getAllCode);
+
+    route.post("/api/create-markdown", markdownController.createMarkdown);
+    route.put("/api/update-markdown", markdownController.updateMarkdown);
+
+    route.post(
+        "/api/bulk-create-schedule",
+        doctorController.bulkCreateSchedule
+    );
 
     return app.use("/", route);
 };
