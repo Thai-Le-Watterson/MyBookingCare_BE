@@ -123,6 +123,49 @@ const getDoctorDetail = (id) => {
     });
 };
 
+const getSchedule = (req) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // const date = moment(req.date, "DD/MM/YYYY").toDate();
+            const date = moment.utc(req.date, "DD/MM/YYYY").toDate();
+            // const timestamp = moment(date, "DD/MM/YYYY").valueOf();
+            const doctorId = +req.doctorId;
+
+            const doctorSchedule = await db.Schedules.findAll({
+                where: {
+                    doctorId,
+                    date,
+                },
+                include: [
+                    {
+                        model: db.Allcodes,
+                        as: "timeData",
+                        attributes: ["valueEn", "valueVi"],
+                    },
+                ],
+                order: [["timeType", "ASC"]],
+                raw: true,
+                nest: true,
+            });
+
+            if (doctorSchedule && !_.isEmpty(doctorSchedule)) {
+                resolve({
+                    errCode: 0,
+                    message: "Get doctor schedule successfully",
+                    schedule: doctorSchedule,
+                });
+            } else {
+                resolve({
+                    errCode: 1,
+                    message: "Get doctor schedule fail",
+                });
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 const bulkCreateSchedule = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -137,6 +180,14 @@ const bulkCreateSchedule = (data) => {
                     return obj1.timeType === obj2.timeType;
                 }
             );
+
+            // console.log("check create bulk ========================");
+            // console.log(data);
+            // console.log({
+            //     dateDB: scheduleExists[0].date,
+            //     date: data.dateString,
+            // });
+            // console.log(scheduleExists[0].date === data.dateString);
 
             if (differenceSchedules && !_.isEmpty(differenceSchedules)) {
                 await db.Schedules.bulkCreate(differenceSchedules);
@@ -156,4 +207,10 @@ const bulkCreateSchedule = (data) => {
     });
 };
 
-export { getTopDoctors, getAllDoctors, getDoctorDetail, bulkCreateSchedule };
+export {
+    getTopDoctors,
+    getAllDoctors,
+    getDoctorDetail,
+    bulkCreateSchedule,
+    getSchedule,
+};

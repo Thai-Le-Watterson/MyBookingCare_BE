@@ -31,6 +31,7 @@ const initWebRoutes = (app) => {
     route.post("/api/create-markdown", markdownController.createMarkdown);
     route.put("/api/update-markdown", markdownController.updateMarkdown);
 
+    route.get("/api/get-schedule", doctorController.getSchedule);
     route.post(
         "/api/bulk-create-schedule",
         doctorController.bulkCreateSchedule
