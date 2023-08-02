@@ -99,6 +99,18 @@ const getDoctorDetail = (id) => {
                         as: "genderData",
                         attributes: ["valueVi", "valueEn"],
                     },
+                    {
+                        model: db.Doctor_Infors,
+                        as: "doctorInforData",
+                        attributes: [
+                            "priceId",
+                            "provinceId",
+                            "paymentId",
+                            "addressClinic",
+                            "nameClinic",
+                            "note",
+                        ],
+                    },
                 ],
                 raw: true,
                 nest: true,
@@ -207,10 +219,64 @@ const bulkCreateSchedule = (data) => {
     });
 };
 
+const createDoctorInfor = (data) => {
+    return new Promise(async (resovle, reject) => {
+        try {
+            await db.Doctor_Infors.create({
+                doctorId: data.doctorId,
+                priceId: data.priceId,
+                provinceId: data.provinceId,
+                paymentId: data.paymentId,
+                addressClinic: data.addressClinic,
+                nameClinic: data.nameClinic,
+                note: data.note,
+                count: data.count,
+            });
+
+            resovle({
+                errCode: 0,
+                message: "Create doctor infor successfully",
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+const updateDoctorInfor = (data) => {
+    return new Promise(async (resovle, reject) => {
+        try {
+            await db.Doctor_Infors.update(
+                {
+                    priceId: data.priceId,
+                    provinceId: data.provinceId,
+                    paymentId: data.paymentId,
+                    addressClinic: data.addressClinic,
+                    nameClinic: data.nameClinic,
+                    note: data.note,
+                    count: data.count,
+                },
+                {
+                    where: { doctorId: data.doctorId },
+                }
+            );
+
+            resovle({
+                errCode: 0,
+                message: "Update doctor infor successfully",
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 export {
     getTopDoctors,
     getAllDoctors,
     getDoctorDetail,
     bulkCreateSchedule,
     getSchedule,
+    createDoctorInfor,
+    updateDoctorInfor,
 };

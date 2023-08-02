@@ -26,6 +26,9 @@ const initWebRoutes = (app) => {
     route.get("/api/all-doctors", doctorController.getAllDoctors);
     route.get("/api/detail-doctor?:id", doctorController.getDoctorDetail);
 
+    route.post("/api/create-doctor-infor", doctorController.createDoctorInfor);
+    route.put("/api/update-doctor-infor", doctorController.updateDoctorInfor);
+
     route.get("/api/get-allcode", userController.getAllCode);
 
     route.post("/api/create-markdown", markdownController.createMarkdown);

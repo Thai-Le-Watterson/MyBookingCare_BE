@@ -86,10 +86,58 @@ const bulkCreateSchedule = async (req, res) => {
     }
 };
 
+const createDoctorInfor = async (req, res) => {
+    try {
+        const data = await doctorService.createDoctorInfor(req.body);
+
+        if (data && data.errCode === 0) {
+            return res.status(200).json({
+                data,
+            });
+        } else {
+            return res.status(200).json({
+                errCode: 1,
+                message: "Create doctor infor fail",
+            });
+        }
+    } catch (e) {
+        return res.status(200).json({
+            errCode: -1,
+            message: "Get error from sever",
+            error: e,
+        });
+    }
+};
+
+const updateDoctorInfor = async (req, res) => {
+    try {
+        const data = await doctorService.updateDoctorInfor(req.body);
+
+        if (data && data.errCode === 0) {
+            return res.status(200).json({
+                data,
+            });
+        } else {
+            return res.status(200).json({
+                errCode: 1,
+                message: "Update doctor infor fail",
+            });
+        }
+    } catch (e) {
+        return res.status(200).json({
+            errCode: -1,
+            message: "Get error from sever",
+            error: e,
+        });
+    }
+};
+
 export {
     getTopDoctors,
     getAllDoctors,
     getDoctorDetail,
     bulkCreateSchedule,
     getSchedule,
+    createDoctorInfor,
+    updateDoctorInfor,
 };
