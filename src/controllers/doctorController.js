@@ -95,10 +95,7 @@ const createDoctorInfor = async (req, res) => {
                 data,
             });
         } else {
-            return res.status(200).json({
-                errCode: 1,
-                message: "Create doctor infor fail",
-            });
+            return res.status(200).json(data);
         }
     } catch (e) {
         return res.status(200).json({

@@ -110,6 +110,23 @@ const getDoctorDetail = (id) => {
                             "nameClinic",
                             "note",
                         ],
+                        include: [
+                            {
+                                model: db.Allcodes,
+                                as: "priceData",
+                                attributes: ["valueVi", "valueEn"],
+                            },
+                            {
+                                model: db.Allcodes,
+                                as: "provinceData",
+                                attributes: ["valueVi", "valueEn"],
+                            },
+                            {
+                                model: db.Allcodes,
+                                as: "paymentData",
+                                attributes: ["valueVi", "valueEn"],
+                            },
+                        ],
                     },
                 ],
                 raw: true,
@@ -222,6 +239,17 @@ const bulkCreateSchedule = (data) => {
 const createDoctorInfor = (data) => {
     return new Promise(async (resovle, reject) => {
         try {
+            const isExist = db.Doctor_Infors.findOne({
+                where: { doctorId: data.doctorId },
+            });
+
+            if (isExist) {
+                resovle({
+                    errCode: 2,
+                    message: "This doctor already has this information",
+                });
+            }
+
             await db.Doctor_Infors.create({
                 doctorId: data.doctorId,
                 priceId: data.priceId,
