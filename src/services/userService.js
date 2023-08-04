@@ -17,7 +17,12 @@ const handleLogin = (email, password) => {
                         if (result) {
                             userData.errCode = 0;
                             userData.message = "Login success";
-                            userData.user = user;
+                            const userCopy = {
+                                email: user.email,
+                                fullName: user.fullName,
+                                roleId: user.roleId,
+                            };
+                            userData.user = userCopy;
                         } else {
                             userData.errCode = 2;
                             userData.message = "Wrong password";

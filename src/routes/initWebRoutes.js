@@ -3,6 +3,7 @@ import * as homeController from "../controllers/homeController";
 import * as userController from "../controllers/userController";
 import * as doctorController from "../controllers/doctorController";
 import * as markdownController from "../controllers/markdownController";
+import * as patientController from "../controllers/patientController";
 
 const route = express.Router();
 
@@ -39,6 +40,8 @@ const initWebRoutes = (app) => {
         "/api/bulk-create-schedule",
         doctorController.bulkCreateSchedule
     );
+
+    route.post("/api/create-booking", patientController.createBooking);
 
     return app.use("/", route);
 };

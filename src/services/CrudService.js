@@ -45,6 +45,7 @@ const updateUser = (userId, data) => {
         }
     });
 };
+
 const deleteUser = (data) => {
     return new Promise(async (resolve, reject) => {
         try {

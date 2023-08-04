@@ -210,8 +210,8 @@ const bulkCreateSchedule = (data) => {
                 }
             );
 
-            // console.log("check create bulk ========================");
-            // console.log(data);
+            console.log("check create bulk ========================");
+            console.log(differenceSchedules);
             // console.log({
             //     dateDB: scheduleExists[0].date,
             //     date: data.dateString,
