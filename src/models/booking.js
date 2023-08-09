@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
             date: DataTypes.DATE,
             timeType: DataTypes.STRING,
             reason: DataTypes.STRING,
+            token: DataTypes.STRING,
         },
         {
             sequelize,

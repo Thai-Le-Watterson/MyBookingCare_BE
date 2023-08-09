@@ -71,6 +71,64 @@ const getAllDoctors = () => {
     });
 };
 
+const getDoctorInforBySpecialty = (id, provinceId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const condition = { specialtyId: id };
+
+            provinceId &&
+                provinceId !== "ALL" &&
+                (condition.provinceId = provinceId);
+
+            const doctorsInfor = await db.Doctor_Infors.findAll({
+                where: condition,
+                attributes: ["doctorId"],
+            });
+
+            if (doctorsInfor) {
+                resolve({
+                    errCode: 0,
+                    message: "Get doctor infor successfully",
+                    doctorsInfor,
+                });
+            } else {
+                resolve({
+                    errCode: 2,
+                    message: "Get doctor infor fail",
+                });
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+const getDoctorInforByClinic = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const doctorsInfor = await db.Doctor_Infors.findAll({
+                where: { clinicId: id },
+                attributes: ["doctorId"],
+            });
+
+            if (doctorsInfor && !_.isEmpty(doctorsInfor)) {
+                resolve({
+                    errCode: 0,
+                    message: "Get doctor infor successfully",
+                    doctorsInfor,
+                });
+            } else {
+                resolve({
+                    errCode: 2,
+                    message: "Get doctor infor fail",
+                });
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 const getDoctorDetail = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -114,17 +172,22 @@ const getDoctorDetail = (id) => {
                             {
                                 model: db.Allcodes,
                                 as: "priceData",
-                                attributes: ["valueVi", "valueEn"],
+                                attributes: ["keyMap", "valueVi", "valueEn"],
                             },
                             {
                                 model: db.Allcodes,
                                 as: "provinceData",
-                                attributes: ["valueVi", "valueEn"],
+                                attributes: ["keyMap", "valueVi", "valueEn"],
                             },
                             {
                                 model: db.Allcodes,
                                 as: "paymentData",
-                                attributes: ["valueVi", "valueEn"],
+                                attributes: ["keyMap", "valueVi", "valueEn"],
+                            },
+                            {
+                                model: db.Specialties,
+                                as: "specialtyData",
+                                attributes: ["id", "name"],
                             },
                         ],
                     },
@@ -239,32 +302,34 @@ const bulkCreateSchedule = (data) => {
 const createDoctorInfor = (data) => {
     return new Promise(async (resovle, reject) => {
         try {
-            const isExist = db.Doctor_Infors.findOne({
+            const isExist = await db.Doctor_Infors.findOne({
                 where: { doctorId: data.doctorId },
             });
-
+            console.log(isExist);
             if (isExist) {
                 resovle({
                     errCode: 2,
                     message: "This doctor already has this information",
                 });
+            } else {
+                await db.Doctor_Infors.create({
+                    doctorId: data.doctorId,
+                    priceId: data.priceId,
+                    provinceId: data.provinceId,
+                    paymentId: data.paymentId,
+                    specialtyId: data?.specialtyId,
+                    clinicId: data?.clinicId,
+                    addressClinic: data.addressClinic,
+                    nameClinic: data.nameClinic,
+                    note: data.note,
+                    count: data.count,
+                });
+
+                resovle({
+                    errCode: 0,
+                    message: "Create doctor infor successfully",
+                });
             }
-
-            await db.Doctor_Infors.create({
-                doctorId: data.doctorId,
-                priceId: data.priceId,
-                provinceId: data.provinceId,
-                paymentId: data.paymentId,
-                addressClinic: data.addressClinic,
-                nameClinic: data.nameClinic,
-                note: data.note,
-                count: data.count,
-            });
-
-            resovle({
-                errCode: 0,
-                message: "Create doctor infor successfully",
-            });
         } catch (e) {
             reject(e);
         }
@@ -279,6 +344,8 @@ const updateDoctorInfor = (data) => {
                     priceId: data.priceId,
                     provinceId: data.provinceId,
                     paymentId: data.paymentId,
+                    specialtyId: data?.specialtyId,
+                    clinicId: data?.clinicId,
                     addressClinic: data.addressClinic,
                     nameClinic: data.nameClinic,
                     note: data.note,
@@ -307,4 +374,6 @@ export {
     getSchedule,
     createDoctorInfor,
     updateDoctorInfor,
+    getDoctorInforBySpecialty,
+    getDoctorInforByClinic,
 };

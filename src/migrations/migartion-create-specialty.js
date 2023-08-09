@@ -9,11 +9,21 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER,
             },
-            description: {
+            name: {
+                allowNull: false,
+                type: Sequelize.STRING,
+            },
+            contentHTML: {
+                allowNull: false,
+                type: Sequelize.TEXT,
+            },
+            contentMarkDown: {
+                allowNull: false,
                 type: Sequelize.TEXT,
             },
             image: {
-                type: Sequelize.STRING,
+                allowNull: false,
+                type: Sequelize.BLOB("long"),
             },
             createdAt: {
                 allowNull: false,

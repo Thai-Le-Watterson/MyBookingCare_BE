@@ -9,14 +9,47 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER,
             },
-            address: {
+            name: {
+                allowNull: false,
                 type: Sequelize.STRING,
             },
-            description: {
-                type: Sequelize.TEXT,
+            address: {
+                allowNull: false,
+                type: Sequelize.STRING,
             },
             image: {
-                type: Sequelize.STRING,
+                allowNull: false,
+                type: Sequelize.BLOB("long"),
+            },
+            introduceHTML: {
+                type: Sequelize.TEXT,
+            },
+            introduceMarkDown: {
+                type: Sequelize.TEXT,
+            },
+            professionalHTML: {
+                type: Sequelize.TEXT,
+            },
+            professionalMarkDown: {
+                type: Sequelize.TEXT,
+            },
+            equipmentHTML: {
+                type: Sequelize.TEXT,
+            },
+            equipmentMarkDown: {
+                type: Sequelize.TEXT,
+            },
+            locationHTML: {
+                type: Sequelize.TEXT,
+            },
+            locationMarkDown: {
+                type: Sequelize.TEXT,
+            },
+            procedureHTML: {
+                type: Sequelize.TEXT,
+            },
+            procedureMarkDown: {
+                type: Sequelize.TEXT,
             },
             createdAt: {
                 allowNull: false,

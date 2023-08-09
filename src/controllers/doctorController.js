@@ -51,6 +51,51 @@ const getDoctorDetail = async (req, res) => {
     }
 };
 
+const getDoctorInforBySpecialty = async (req, res) => {
+    try {
+        if (!req.query.id) {
+            return res.status(200).json({
+                errCode: 1,
+                message: "Missing id",
+            });
+        }
+
+        const data = await doctorService.getDoctorInforBySpecialty(
+            req.query.id,
+            req.query.provinceId
+        );
+
+        return res.status(200).json(data);
+    } catch (e) {
+        return res.status(200).json({
+            errCode: -1,
+            message: "Get error from sever",
+            error: e,
+        });
+    }
+};
+
+const getDoctorInforByClinic = async (req, res) => {
+    try {
+        if (!req.query.id) {
+            return res.status(200).json({
+                errCode: 1,
+                message: "Missing id",
+            });
+        }
+
+        const data = await doctorService.getDoctorInforByClinic(req.query.id);
+
+        return res.status(200).json(data);
+    } catch (e) {
+        return res.status(200).json({
+            errCode: -1,
+            message: "Get error from sever",
+            error: e,
+        });
+    }
+};
+
 const getSchedule = async (req, res) => {
     try {
         if (!req.query.doctorId || !req.query.date) {
@@ -137,4 +182,6 @@ export {
     getSchedule,
     createDoctorInfor,
     updateDoctorInfor,
+    getDoctorInforBySpecialty,
+    getDoctorInforByClinic,
 };

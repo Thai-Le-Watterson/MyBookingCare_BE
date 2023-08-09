@@ -23,6 +23,11 @@ module.exports = (sequelize, DataTypes) => {
                 targetKey: "keyMap",
                 as: "paymentData",
             });
+            Doctor_Infor.belongsTo(models.Specialties, {
+                foreignKey: "specialtyId",
+                targetKey: "id",
+                as: "specialtyData",
+            });
             Doctor_Infor.belongsTo(models.Users, {
                 foreignKey: "doctorId",
                 targetKey: "id",
@@ -36,6 +41,8 @@ module.exports = (sequelize, DataTypes) => {
             priceId: DataTypes.STRING,
             provinceId: DataTypes.STRING,
             paymentId: DataTypes.STRING,
+            specialtyId: DataTypes.STRING,
+            clinicId: DataTypes.STRING,
             addressClinic: DataTypes.STRING,
             nameClinic: DataTypes.STRING,
             note: DataTypes.STRING,
