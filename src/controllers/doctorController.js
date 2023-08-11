@@ -174,6 +174,30 @@ const updateDoctorInfor = async (req, res) => {
     }
 };
 
+const getAllBooking = async (req, res) => {
+    try {
+        if (!req.query.doctorId || !req.query.date) {
+            return res.status(200).json({
+                errCode: 1,
+                message: "Missing parameter",
+            });
+        }
+
+        const data = await doctorService.getAllBooking({
+            doctorId: req.query.doctorId,
+            date: req.query.date,
+        });
+
+        return res.status(200).json({ data });
+    } catch (e) {
+        return res.status(200).json({
+            errCode: -1,
+            message: "Get error from sever",
+            error: e,
+        });
+    }
+};
+
 export {
     getTopDoctors,
     getAllDoctors,
@@ -184,4 +208,5 @@ export {
     updateDoctorInfor,
     getDoctorInforBySpecialty,
     getDoctorInforByClinic,
+    getAllBooking,
 };

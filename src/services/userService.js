@@ -18,6 +18,7 @@ const handleLogin = (email, password) => {
                             userData.errCode = 0;
                             userData.message = "Login success";
                             const userCopy = {
+                                id: user.id,
                                 email: user.email,
                                 fullName: user.fullName,
                                 roleId: user.roleId,
@@ -44,7 +45,7 @@ const handleLogin = (email, password) => {
 const checkUser = async (name, value) => {
     try {
         const user = await db.Users.findOne({
-            attributes: ["email", "fullName", "roleId", "password"],
+            attributes: ["id", "email", "fullName", "roleId", "password"],
             where: { [name]: value },
             raw: true,
         });

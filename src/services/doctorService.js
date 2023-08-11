@@ -366,6 +366,56 @@ const updateDoctorInfor = (data) => {
     });
 };
 
+const getAllBooking = (req) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const date = moment(req.date, "DD/MM/YYYY").toDate();
+            // const date = moment.utc(req.date, "DD/MM/YYYY").toDate();
+            // const timestamp = moment(date, "DD/MM/YYYY").valueOf();
+            const doctorId = +req.doctorId;
+
+            const bookings = await db.Bookings.findAll({
+                where: {
+                    doctorId,
+                    date,
+                    statusId: "R2",
+                },
+                include: [
+                    {
+                        model: db.Allcodes,
+                        as: "timeBookingData",
+                        attributes: ["valueEn", "valueVi"],
+                    },
+                    {
+                        model: db.Allcodes,
+                        as: "genderBookingData",
+                        attributes: ["valueEn", "valueVi"],
+                    },
+                ],
+                order: [["timeType", "ASC"]],
+                raw: true,
+                nest: true,
+            });
+            if (bookings && !_.isEmpty(bookings)) {
+                console.log("check bookings date: ", bookings[0].date);
+                console.log("check date: ", date);
+                resolve({
+                    errCode: 0,
+                    message: "Get bookings successfully",
+                    bookings: bookings,
+                });
+            } else {
+                resolve({
+                    errCode: 1,
+                    message: "Get bookings fail",
+                });
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 export {
     getTopDoctors,
     getAllDoctors,
@@ -376,4 +426,5 @@ export {
     updateDoctorInfor,
     getDoctorInforBySpecialty,
     getDoctorInforByClinic,
+    getAllBooking,
 };

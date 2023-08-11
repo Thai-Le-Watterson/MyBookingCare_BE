@@ -27,6 +27,7 @@ const createBooking = (data) => {
                     data.reason
                 ) {
                     const date = moment(data.date, "DD/MM/YYYY").toDate();
+                    // const date = +data.date;
                     const dateBirth = moment(
                         data.dateBirth,
                         "DD/MM/YYYY"
