@@ -27,8 +27,15 @@ module.exports = {
             gender: {
                 type: Sequelize.STRING,
             },
+            positionId: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
             roleId: {
                 type: Sequelize.STRING,
+            },
+            image: {
+                type: Sequelize.BLOB("long"),
             },
             createdAt: {
                 allowNull: false,

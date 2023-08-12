@@ -43,6 +43,7 @@ const getDoctorDetail = async (req, res) => {
 
         return res.status(200).json({ data });
     } catch (e) {
+        console.log("check error: ", e);
         return res.status(200).json({
             errCode: -1,
             message: "Get error from sever",
@@ -198,6 +199,20 @@ const getAllBooking = async (req, res) => {
     }
 };
 
+const confirmBooking = async (req, res) => {
+    try {
+        const data = await doctorService.confirmBooking(req.body);
+
+        return res.status(200).json(data);
+    } catch (e) {
+        return res.status(200).json({
+            errCode: -1,
+            message: "Get error from sever",
+            error: e,
+        });
+    }
+};
+
 export {
     getTopDoctors,
     getAllDoctors,
@@ -209,4 +224,5 @@ export {
     getDoctorInforBySpecialty,
     getDoctorInforByClinic,
     getAllBooking,
+    confirmBooking,
 };

@@ -28,11 +28,12 @@ const getSpecialty = async (req, res) => {
 
 const getAllSpecialties = async (req, res) => {
     try {
-        console.log(">>> into controller");
+        // console.log(">>> into controller");
         const data = await specialtyService.getAllSpecialties();
 
         return res.status(200).json(data);
     } catch (e) {
+        // console.log("check error: ", e);
         return res.status(200).json({
             errCode: -1,
             message: "Get error from server",

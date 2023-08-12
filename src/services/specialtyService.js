@@ -47,9 +47,9 @@ const getSpecialty = (id) => {
 const getAllSpecialties = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            console.log(">>> into service");
+            // console.log(">>> into service");
             const specialties = await db.Specialties.findAll();
-            console.log(">>>check specialties: ", specialties);
+            // console.log(">>>check specialties: ", specialties);
 
             if (specialties && !_.isEmpty(specialties)) {
                 resolve({

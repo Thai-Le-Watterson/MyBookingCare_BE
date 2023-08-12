@@ -1,6 +1,7 @@
 import db from "../models";
 import _ from "lodash";
 import moment from "moment";
+import * as emailService from "./emailService";
 
 const getTopDoctors = (limit) => {
     return new Promise(async (resolve, reject) => {
@@ -129,9 +130,10 @@ const getDoctorInforByClinic = (id) => {
     });
 };
 
-const getDoctorDetail = (id) => {
+const getDoctorDetail = (reqId) => {
     return new Promise(async (resolve, reject) => {
         try {
+            const id = +reqId;
             const doctor = await db.Users.findOne({
                 where: { id },
                 attributes: {
@@ -196,6 +198,8 @@ const getDoctorDetail = (id) => {
                 nest: true,
             });
 
+            // doctor.doctorInforData = { ...doctorInforData };
+            // console.log("check doctor: ", doctor);
             if (doctor) {
                 resolve({
                     errCode: 0,
@@ -273,8 +277,8 @@ const bulkCreateSchedule = (data) => {
                 }
             );
 
-            console.log("check create bulk ========================");
-            console.log(differenceSchedules);
+            // console.log("check create bulk ========================");
+            // console.log(differenceSchedules);
             // console.log({
             //     dateDB: scheduleExists[0].date,
             //     date: data.dateString,
@@ -305,7 +309,7 @@ const createDoctorInfor = (data) => {
             const isExist = await db.Doctor_Infors.findOne({
                 where: { doctorId: data.doctorId },
             });
-            console.log(isExist);
+            // console.log(isExist);
             if (isExist) {
                 resovle({
                     errCode: 2,
@@ -391,14 +395,19 @@ const getAllBooking = (req) => {
                         as: "genderBookingData",
                         attributes: ["valueEn", "valueVi"],
                     },
+                    {
+                        model: db.Users,
+                        as: "doctorData",
+                        attributes: ["fullName"],
+                    },
                 ],
                 order: [["timeType", "ASC"]],
                 raw: true,
                 nest: true,
             });
             if (bookings && !_.isEmpty(bookings)) {
-                console.log("check bookings date: ", bookings[0].date);
-                console.log("check date: ", date);
+                // console.log("check bookings date: ", bookings[0].date);
+                // console.log("check date: ", date);
                 resolve({
                     errCode: 0,
                     message: "Get bookings successfully",
@@ -408,6 +417,43 @@ const getAllBooking = (req) => {
                 resolve({
                     errCode: 1,
                     message: "Get bookings fail",
+                });
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+const confirmBooking = (req) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const date = moment(req.date, "DD/MM/YYYY").toDate();
+            // const date = moment.utc(req.date, "DD/MM/YYYY").toDate();
+            // const timestamp = moment(date, "DD/MM/YYYY").valueOf();
+
+            const booking = await db.Bookings.findOne({
+                where: {
+                    doctorId: req.doctorId,
+                    patientEmail: req.patientEmail,
+                    date,
+                    statusId: "R2",
+                },
+                raw: false,
+            });
+            if (booking && !_.isEmpty(booking)) {
+                booking.statusId = "R3";
+                booking.save();
+                await emailService.sendConfirmEmail(req);
+
+                resolve({
+                    errCode: 0,
+                    message: "Confirm booking successfully",
+                });
+            } else {
+                resolve({
+                    errCode: 1,
+                    message: "Confirm booking fail",
                 });
             }
         } catch (e) {
@@ -427,4 +473,5 @@ export {
     getDoctorInforBySpecialty,
     getDoctorInforByClinic,
     getAllBooking,
+    confirmBooking,
 };

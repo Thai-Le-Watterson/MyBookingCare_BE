@@ -6,10 +6,34 @@ const Sequelize = require("sequelize");
 const process = require("process");
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
-const config = require(__dirname + "/../config/database.json")[env];
+const config = require(__dirname + "/../config/database.js")[env];
 const db = {};
 
+require("dotenv").config();
+
 let sequelize;
+// let customizeConfig = {
+//     host: process.env.DB_HOST,
+//     dialect: "postgres",
+//     logging: false,
+//     dialectOptions:
+//         process.env.DB_SSL === "true"
+//             ? {
+//                   ssl: {
+//                       require: true,
+//                       rejectUnauthorized: false,
+//                   },
+//               }
+//             : {},
+// };
+
+// sequelize = new Sequelize(
+//     process.env.DB_DATABASE_NAME,
+//     process.env.DB_USERNAME,
+//     process.env.DB_PASSWORD,
+//     customizeConfig
+// );
+// console.log(">>>check: ", config);
 if (config.use_env_variable) {
     sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {

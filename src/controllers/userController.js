@@ -3,7 +3,7 @@ import * as userService from "../services/userService";
 const handleLoginUser = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-    console.log(req.body);
+    // console.log(req.body);
     if (!email || !password) {
         return res.status(500).json({
             errCode: 1,

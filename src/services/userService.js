@@ -8,6 +8,7 @@ const handleLogin = (email, password) => {
             const userData = {};
 
             const user = await checkUser("email", email);
+            // console.log("check user 2: ", user);
 
             if (user) {
                 await bcrypt.compare(
@@ -45,10 +46,11 @@ const handleLogin = (email, password) => {
 const checkUser = async (name, value) => {
     try {
         const user = await db.Users.findOne({
-            attributes: ["id", "email", "fullName", "roleId", "password"],
+            // attributes: ["id", "email", "fullName", "roleId", "password"],
             where: { [name]: value },
-            raw: true,
+            // raw: true,
         });
+        // console.log("check user 1: ", user);
 
         if (user) {
             return user;
@@ -56,6 +58,7 @@ const checkUser = async (name, value) => {
             return false;
         }
     } catch (e) {
+        // console.log("check error: ", e);
         return false;
     }
 };
@@ -153,7 +156,7 @@ const updateUser = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             const result = await checkUser("id", data.id);
-            console.log(">>> check data: ", data);
+            // console.log(">>> check data: ", data);
             if (result) {
                 const option = {
                     fullName: data.fullName,
@@ -218,8 +221,9 @@ const deleteUser = (id) => {
 const getAllCode = async (type) => {
     try {
         const data = type
-            ? await db.Allcodes.findAll({ where: { type } })
+            ? await db.Allcodes.findAll({ where: { type: type.toUpperCase() } })
             : await db.Allcodes.findAll();
+        // console.log("check data: ", data);
         return {
             errCode: 0,
             message: "Get allcode succeed",

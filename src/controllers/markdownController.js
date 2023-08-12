@@ -20,6 +20,7 @@ const updateMarkdown = async (req, res) => {
 
         res.status(200).json(result);
     } catch (e) {
+        // console.log("check error: ", e);
         res.status(200).json({
             errCode: -1,
             message: "Get error from sever",

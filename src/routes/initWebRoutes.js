@@ -67,6 +67,7 @@ const initWebRoutes = (app) => {
     route.put("/api/update-clinic", clinicController.updateClinic);
 
     route.get("/api/get-all-booking-doctor", doctorController.getAllBooking);
+    route.put("/api/confirm-booking-doctor", doctorController.confirmBooking);
 
     return app.use("/", route);
 };
