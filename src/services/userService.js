@@ -8,7 +8,7 @@ const handleLogin = (email, password) => {
             const userData = {};
 
             const user = await checkUser("email", email);
-            // console.log("check user 2: ", user);
+            console.log("check user 2: ", user);
 
             if (user) {
                 await bcrypt.compare(
@@ -23,6 +23,7 @@ const handleLogin = (email, password) => {
                                 email: user.email,
                                 fullName: user.fullName,
                                 roleId: user.roleId,
+                                image: user.image,
                             };
                             userData.user = userCopy;
                         } else {
