@@ -4,9 +4,9 @@ const bcrypt = require("bcrypt");
 
 const getHomePage = async (req, res) => {
     try {
-        const data = await db.Users.findAll();
+        // const data = await db.Users.findAll();
 
-        return res.render("homePage.ejs", { data: JSON.stringify(data) });
+        return res.render("homePage.ejs"); //, { data: JSON.stringify(data) });
     } catch (e) {
         return res
             .status(200)
