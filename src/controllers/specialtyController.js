@@ -37,7 +37,7 @@ const getAllSpecialties = async (req, res) => {
         return res.status(200).json({
             errCode: -1,
             message: "Get error from server",
-            error: e,
+            error: e + "",
         });
     }
 };
