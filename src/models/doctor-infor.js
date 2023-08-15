@@ -33,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
                 targetKey: "id",
                 as: "doctorInforData",
             });
+            Doctor_Infor.belongsTo(models.Clinics, {
+                foreignKey: "clinicId",
+                targetKey: "id",
+                as: "clinicData",
+            });
         }
     }
     Doctor_Infor.init(
@@ -43,8 +48,8 @@ module.exports = (sequelize, DataTypes) => {
             paymentId: DataTypes.STRING,
             specialtyId: DataTypes.STRING,
             clinicId: DataTypes.INTEGER,
-            addressClinic: DataTypes.INTEGER,
-            nameClinic: DataTypes.STRING,
+            // addressClinic: DataTypes.INTEGER,
+            // nameClinic: DataTypes.STRING,
             note: DataTypes.STRING,
             count: DataTypes.INTEGER,
         },
