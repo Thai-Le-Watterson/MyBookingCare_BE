@@ -59,6 +59,71 @@ const getAllHandbookCategory = async (req, res) => {
     }
 };
 
+const getAllHandbook = async (req, res) => {
+    try {
+        const data = await handbookService.getAllHandbook(req.query.limit);
+
+        return res.status(200).json(data);
+    } catch (e) {
+        console.log(e);
+        return res.status(200).json({
+            errCode: -1,
+            message: "Get error from sever",
+            error: e,
+        });
+    }
+};
+
+const getAllHandbookByCategory = async (req, res) => {
+    try {
+        if (!req.query.categoryId) {
+            return res.status(200).json({
+                errCode: 1,
+                message: "Missing parameter",
+            });
+        }
+        const data = await handbookService.getAllHandbookByCategory(
+            req.query.categoryId,
+            req.query.limit,
+            req.query.orderBy
+        );
+
+        return res.status(200).json(data);
+    } catch (e) {
+        console.log(e);
+        return res.status(200).json({
+            errCode: -1,
+            message: "Get error from sever",
+            error: e,
+        });
+    }
+};
+
+const getHandbook = async (req, res) => {
+    try {
+        if (!req.query.id) {
+            return res.status(200).json({
+                errCode: 1,
+                message: "Missing parameter",
+            });
+        }
+
+        const data = await handbookService.getHandbook(
+            req.query.id,
+            req.query.isIncreaseViews
+        );
+
+        return res.status(200).json(data);
+    } catch (e) {
+        console.log(e);
+        return res.status(200).json({
+            errCode: -1,
+            message: "Get error from sever",
+            error: e,
+        });
+    }
+};
+
 const createHandbook = async (req, res) => {
     try {
         const data = await handbookService.createHandbook(req.body);
@@ -78,5 +143,8 @@ export {
     getAllHandbookCategory,
     deleteHandbookCategory,
     updateHandbookCategory,
+    getAllHandbook,
+    getAllHandbookByCategory,
+    getHandbook,
     createHandbook,
 };

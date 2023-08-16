@@ -121,7 +121,7 @@ const deleteHandbookCategory = (data) => {
 const getAllHandbookCategory = (limit) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const condition = (limit && { limit: +limit }) || {};
+            const condition = (+limit && +limit > 0 && { limit: +limit }) || {};
             const categories = await db.Category_Handbooks.findAll(condition);
 
             if (categories && !_.isEmpty(categories)) {
@@ -134,6 +134,97 @@ const getAllHandbookCategory = (limit) => {
                 resolve({
                     errCode: 2,
                     message: "Get all category fail",
+                });
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+const getAllHandbook = (limit, orderBy = "publicationDate") => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const condition = { order: [[orderBy, "DESC"]] };
+            if (+limit && +limit > 0) condition.limit = +limit;
+            const handbooks = await db.Handbooks.findAll(condition);
+
+            if (handbooks && !_.isEmpty(handbooks)) {
+                resolve({
+                    errCode: 0,
+                    message: "Get all handbook successfully",
+                    handbooks,
+                });
+            } else {
+                resolve({
+                    errCode: 2,
+                    message: "Get all handbook fail",
+                });
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+const getAllHandbookByCategory = (categoryId, limit) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const condition = {
+                where: { categoryId },
+                order: [["publicationDate", "DESC"]],
+            };
+            if (+limit && +limit > 0) condition.limit = +limit;
+
+            const handbooks = await db.Handbooks.findAll(condition);
+
+            if (handbooks && !_.isEmpty(handbooks)) {
+                resolve({
+                    errCode: 0,
+                    message: "Get all handbook by category successfully",
+                    handbooks,
+                });
+            } else {
+                resolve({
+                    errCode: 2,
+                    message: "Get all handbook by category fail",
+                });
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+const getHandbook = (id, isIncreaseViews = "0") => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const handbook = await db.Handbooks.findOne({
+                where: { id },
+                include: [
+                    {
+                        model: db.Category_Handbooks,
+                        as: "categoryData",
+                        attributes: ["name"],
+                    },
+                ],
+                raw: false,
+            });
+
+            if (handbook && !_.isEmpty(handbook)) {
+                if (isIncreaseViews && isIncreaseViews !== "0") {
+                    handbook.views = ++handbook.views;
+                    handbook.save();
+                }
+                resolve({
+                    errCode: 0,
+                    message: "Get handbook successfully",
+                    handbook,
+                });
+            } else {
+                resolve({
+                    errCode: 2,
+                    message: "Get handbook fail",
                 });
             }
         } catch (e) {
@@ -172,7 +263,7 @@ const createHandbook = (data) => {
                     defaults: {
                         image: data.image || null,
                         doctorId: data.doctorId,
-                        categoryId: data.doctorId,
+                        categoryId: data.categoryId,
                         publicationDate,
                         updateDate,
                         contentHTML: data.contentHTML,
@@ -208,5 +299,8 @@ export {
     getAllHandbookCategory,
     deleteHandbookCategory,
     updateHandbookCategory,
+    getAllHandbook,
+    getAllHandbookByCategory,
+    getHandbook,
     createHandbook,
 };

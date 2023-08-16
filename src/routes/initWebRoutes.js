@@ -86,7 +86,12 @@ const initWebRoutes = (app) => {
         "/api/delete-handbook-category",
         handbookController.deleteHandbookCategory
     );
-
+    route.get("/api/get-all-handbook", handbookController.getAllHandbook);
+    route.get(
+        "/api/get-all-handbook-by-category",
+        handbookController.getAllHandbookByCategory
+    );
+    route.get("/api/get-handbook", handbookController.getHandbook);
     route.post("/api/create-handbook", handbookController.createHandbook);
 
     return app.use("/", route);

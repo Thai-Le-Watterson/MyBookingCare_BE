@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
             categoryId: DataTypes.INTEGER,
             publicationDate: DataTypes.DATE,
             updateDate: DataTypes.DATE,
+            views: DataTypes.INTEGER,
             image: DataTypes.BLOB("long"),
             contentHTML: DataTypes.TEXT,
             contentMarkDown: DataTypes.TEXT,
