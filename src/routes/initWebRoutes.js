@@ -82,6 +82,10 @@ const initWebRoutes = (app) => {
         "/api/get-all-handbook-category",
         handbookController.getAllHandbookCategory
     );
+    route.get(
+        "/api/get-handbook-category",
+        handbookController.getHandbookCategory
+    );
     route.delete(
         "/api/delete-handbook-category",
         handbookController.deleteHandbookCategory
@@ -90,6 +94,10 @@ const initWebRoutes = (app) => {
     route.get(
         "/api/get-all-handbook-by-category",
         handbookController.getAllHandbookByCategory
+    );
+    route.get(
+        "/api/get-all-handbook-by-category-pagination",
+        handbookController.getAllHandbookByCategoryPG
     );
     route.get("/api/get-handbook", handbookController.getHandbook);
     route.post("/api/create-handbook", handbookController.createHandbook);

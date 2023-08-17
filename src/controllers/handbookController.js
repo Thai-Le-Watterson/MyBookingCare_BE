@@ -45,7 +45,25 @@ const deleteHandbookCategory = async (req, res) => {
 const getAllHandbookCategory = async (req, res) => {
     try {
         const data = await handbookService.getAllHandbookCategory(
-            req.query.limit
+            req.query.limit,
+            req.query.haveImg
+        );
+
+        return res.status(200).json(data);
+    } catch (e) {
+        console.log(e);
+        return res.status(200).json({
+            errCode: -1,
+            message: "Get error from sever",
+            error: e,
+        });
+    }
+};
+
+const getHandbookCategory = async (req, res) => {
+    try {
+        const data = await handbookService.getHandbookCategory(
+            req.query.categoryId
         );
 
         return res.status(200).json(data);
@@ -61,7 +79,10 @@ const getAllHandbookCategory = async (req, res) => {
 
 const getAllHandbook = async (req, res) => {
     try {
-        const data = await handbookService.getAllHandbook(req.query.limit);
+        const data = await handbookService.getAllHandbook(
+            req.query.limit,
+            req.query.orderBy
+        );
 
         return res.status(200).json(data);
     } catch (e) {
@@ -86,6 +107,31 @@ const getAllHandbookByCategory = async (req, res) => {
             req.query.categoryId,
             req.query.limit,
             req.query.orderBy
+        );
+
+        return res.status(200).json(data);
+    } catch (e) {
+        console.log(e);
+        return res.status(200).json({
+            errCode: -1,
+            message: "Get error from sever",
+            error: e,
+        });
+    }
+};
+
+const getAllHandbookByCategoryPG = async (req, res) => {
+    try {
+        if (!req.query.categoryId && !req.query.page) {
+            return res.status(200).json({
+                errCode: 1,
+                message: "Missing parameter",
+            });
+        }
+        const data = await handbookService.getAllHandbookByCategoryPG(
+            req.query.categoryId,
+            req.query.page,
+            req.query.limit
         );
 
         return res.status(200).json(data);
@@ -141,10 +187,12 @@ const createHandbook = async (req, res) => {
 export {
     createHandbookCategory,
     getAllHandbookCategory,
+    getHandbookCategory,
     deleteHandbookCategory,
     updateHandbookCategory,
     getAllHandbook,
     getAllHandbookByCategory,
+    getAllHandbookByCategoryPG,
     getHandbook,
     createHandbook,
 };
