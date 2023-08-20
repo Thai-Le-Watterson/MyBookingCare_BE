@@ -139,7 +139,7 @@ const getAllHandbookCategory = (limit, haveImg = "0") => {
             else if (haveImg && haveImg === "-2") {
                 condition.attributes = ["id", "name"];
             }
-            console.log(">>> check haveImg: ", haveImg);
+            // console.log(">>> check haveImg: ", haveImg);
             const categories = await db.Category_Handbooks.findAll(condition);
 
             if (categories && !_.isEmpty(categories)) {

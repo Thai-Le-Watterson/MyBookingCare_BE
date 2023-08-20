@@ -43,7 +43,7 @@ const getDoctorDetail = async (req, res) => {
 
         return res.status(200).json({ data });
     } catch (e) {
-        console.log("check error: ", e);
+        // console.log("check error: ", e);
         return res.status(200).json({
             errCode: -1,
             message: "Get error from sever",
