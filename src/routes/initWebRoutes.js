@@ -7,6 +7,7 @@ import * as patientController from "../controllers/patientController";
 import * as specialtyController from "../controllers/specialtyController";
 import * as clinicController from "../controllers/clinicController";
 import * as handbookController from "../controllers/handbookController";
+import authMiddleware from "../middlewares/authMiddleware";
 
 const route = express.Router();
 

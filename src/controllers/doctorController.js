@@ -18,7 +18,7 @@ const getTopDoctors = async (req, res) => {
 
 const getAllDoctors = async (req, res) => {
     try {
-        const data = await doctorService.getAllDoctors();
+        const data = await doctorService.getAllDoctors(req.limit);
 
         return res.status(200).json({ data });
     } catch (e) {

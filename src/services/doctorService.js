@@ -23,6 +23,18 @@ const getTopDoctors = (limit) => {
                         as: "genderData",
                         attributes: ["valueVi", "valueEn"],
                     },
+                    {
+                        model: db.Doctor_Infors,
+                        as: "doctorInforData",
+                        attributes: ["specialtyId"],
+                        include: [
+                            {
+                                model: db.Specialties,
+                                as: "specialtyData",
+                                attributes: ["name"],
+                            },
+                        ],
+                    },
                 ],
                 raw: true,
                 nest: true,
@@ -46,13 +58,35 @@ const getTopDoctors = (limit) => {
     });
 };
 
-const getAllDoctors = () => {
+const getAllDoctors = (limit) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const doctors = await db.Users.findAll({
+            const condition = {
                 where: { roleId: "R2" },
-                attributes: { exclude: ["password", "image"] },
-            });
+                attributes: { exclude: ["password"] },
+                include: [
+                    {
+                        model: db.Doctor_Infors,
+                        as: "doctorInforData",
+                        attributes: ["specialtyId"],
+                        include: [
+                            {
+                                model: db.Specialties,
+                                as: "specialtyData",
+                                attributes: ["name"],
+                            },
+                        ],
+                    },
+                ],
+            };
+
+            if (limit && +limit && +limit > 0) {
+                condition.limit = +limit;
+            } else if (limit !== "ALL") {
+                condition.limit = 10;
+            }
+
+            const doctors = await db.Users.findAll(condition);
 
             if (doctors) {
                 resolve({
