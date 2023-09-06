@@ -24,10 +24,32 @@ const checkEmptyData = (data) => {
     return result;
 };
 
-const getAllClinic = () => {
+const getAllClinic = (limit) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const clinics = await db.Clinics.findAll();
+            const option = {
+                include: [
+                    {
+                        model: db.Doctor_Infors,
+                        as: "clinicData",
+                        attributes: ["provinceId", "clinicId"],
+                        include: [
+                            {
+                                model: db.Allcodes,
+                                as: "provinceData",
+                                attributes: ["valueEn", "valueVi"],
+                            },
+                        ],
+                    },
+                ],
+            };
+            if (limit && +limit && +limit > 0) {
+                option.limit = +limit;
+            } else if (!limit || !+limit || +limit <= 0) {
+                option.limit = 10;
+            }
+
+            const clinics = await db.Clinics.findAll(option);
 
             if (clinics && !_.isEmpty(clinics)) {
                 resolve({

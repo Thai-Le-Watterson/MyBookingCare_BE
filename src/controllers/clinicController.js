@@ -2,7 +2,7 @@ import * as clinicService from "../services/clinicService";
 
 const getAllClinic = async (req, res) => {
     try {
-        const data = await clinicService.getAllClinic();
+        const data = await clinicService.getAllClinic(req.query.limit);
 
         return res.status(200).json(data);
     } catch (e) {
